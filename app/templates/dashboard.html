@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Dashboard</h1>
+
+<div class="cards">
+    <div class="card">
+        <h3>Total Rooms</h3>
+        <p class="metric">{{ rooms_count }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Guests</h3>
+        <p class="metric">{{ guests_count }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Occupied</h3>
+        <p class="metric">{{ occupied_count }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Today</h3>
+        <p class="metric">{{ today_label }}</p>
+    </div>
+</div>
+{% endblock %}

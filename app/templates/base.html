@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %} Motel PMS {% endblock %}</title>
+
+    <link rel="stylesheet" href="/static/css/styles.css">
+
+</head>
+
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2 class="logo">🏨 Motel PMS</h2>
+
+            <nav>
+                <a href="/">Dashboard</a>
+                <a href="/rooms">Rooms</a>
+                <a href="/guests">Guests</a>
+                <a href="/reservations">Reservations</a>
+            </nav>
+        </aside>
+
+        <!-- Main content -->
+        <main class="content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+
+</html>

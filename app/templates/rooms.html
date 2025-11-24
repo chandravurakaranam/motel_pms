@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Rooms{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Rooms</h1>
+
+<div class="rooms-layout">
+    <!-- Left: add room form -->
+    <section class="card form-card">
+        <h2>Add Room</h2>
+        <form method="post" action="/rooms" class="form">
+            <label>
+                Room Number
+                <input type="text" name="number" required>
+            </label>
+
+            <label>
+                Room Type
+                <input type="text" name="room_type" value="Standard">
+            </label>
+
+            <label>
+                Status
+                <select name="status_value">
+                    <option value="available">Available</option>
+                    <option value="occupied">Occupied</option>
+                    <option value="cleaning">Cleaning</option>
+                    <option value="out_of_order">Out of Order</option>
+                </select>
+            </label>
+
+            <button type="submit" class="btn-primary">Save Room</button>
+        </form>
+    </section>
+
+    <!-- Right: table of rooms -->
+    <section class="card">
+        <h2>All Rooms</h2>
+
+        {% if rooms %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Room Number</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for room in rooms %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ room.number }}</td>
+                    <td>{{ room.room_type }}</td>
+                    <td>{{ room.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No rooms yet. Add your first room using the form.</p>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

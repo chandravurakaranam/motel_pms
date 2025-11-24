@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Guests{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Guests</h1>
+
+<div class="rooms-layout">
+    <!-- Add Guest Form -->
+    <section class="card form-card">
+        <h2>Add Guest</h2>
+        <form method="post" action="/guests" class="form">
+
+            <label>
+                Full Name
+                <input type="text" name="name" required>
+            </label>
+
+            <label>
+                Phone
+                <input type="text" name="phone" required>
+            </label>
+
+            <label>
+                Email
+                <input type="text" name="email">
+            </label>
+
+            <label>
+                ID Proof (e.g., Driver License)
+                <input type="text" name="id_proof">
+            </label>
+
+            <label>
+                Address
+                <input type="text" name="address">
+            </label>
+
+            <button class="btn-primary" type="submit">Save Guest</button>
+        </form>
+    </section>
+
+    <!-- Guest List -->
+    <section class="card">
+        <h2>All Guests</h2>
+
+        {% if guests %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>ID Proof</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for g in guests %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ g.name }}</td>
+                    <td>{{ g.phone }}</td>
+                    <td>{{ g.email }}</td>
+                    <td>{{ g.id_proof }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No guests yet.</p>
+        {% endif %}
+    </section>
+</div>
+
+{% endblock %}
