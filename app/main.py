@@ -1,7 +1,7 @@
 from datetime import datetime
 from datetime import date
 
-from fastapi import FastAPI, Request, Depends, Form
+from fastapi import FastAPI, Request, Depends, Form, HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -262,7 +262,8 @@ def create_reservation(
     # ---- BASIC DATE VALIDATION ----
     if check_out_date <= check_in_date:
         rooms = db.query(models.Room).filter(
-            models.Room.status == "available").all()
+            models.Room.status == "available"
+        ).all()
         guests = db.query(models.Guest).all()
         reservations = (
             db.query(models.Reservation)
@@ -288,12 +289,53 @@ def create_reservation(
     # ---- Ensure room exists ----
     room = db.query(models.Room).filter(models.Room.id == room_id).first()
     if not room:
+        # if you don't already have this import at the top, add:
+        # from fastapi import HTTPException
         raise HTTPException(status_code=404, detail="Room not found")
 
-    # ---- Block reservation if room is NOT available ----
+    # ---- CHECK FOR OVERLAPPING RESERVATIONS ----
+    existing_reservations = (
+        db.query(models.Reservation)
+        .filter(
+            models.Reservation.room_id == room_id,
+            models.Reservation.status == "booked",        # only active bookings
+            models.Reservation.check_out > check_in_date,  # existing end after new start
+            models.Reservation.check_in < check_out_date,  # existing start before new end
+        )
+        .all()
+    )
+
+    if existing_reservations:
+        rooms = db.query(models.Room).filter(
+            models.Room.status == "available"
+        ).all()
+        guests = db.query(models.Guest).all()
+        reservations = (
+            db.query(models.Reservation)
+            .options(
+                joinedload(models.Reservation.room),
+                joinedload(models.Reservation.guest),
+            )
+            .all()
+        )
+
+        return templates.TemplateResponse(
+            "reservations.html",
+            {
+                "request": request,
+                "rooms": rooms,
+                "guests": guests,
+                "reservations": reservations,
+                "error": "This room is already booked for the selected dates.",
+            },
+            status_code=400,
+        )
+
+    # ---- Block reservation if room is NOT available (extra safety) ----
     if room.status != "available":
         rooms = db.query(models.Room).filter(
-            models.Room.status == "available").all()
+            models.Room.status == "available"
+        ).all()
         guests = db.query(models.Guest).all()
         reservations = (
             db.query(models.Reservation)
