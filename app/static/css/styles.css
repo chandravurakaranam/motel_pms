@@ -124,3 +124,79 @@ body {
 .table th {
     background: #f3f4f6;
 }
+
+/* --- Room availability styling --- */
+
+.status-pill {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* Available = light green */
+.status-available,
+.room-option-available {
+    background-color: #e6ffed;
+    /* light green */
+    color: #166534;
+    /* dark green text */
+}
+
+/* Optional: other statuses if you want */
+.status-occupied {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.status-cleaning {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.status-out_of_order {
+    background-color: #e5e7eb;
+    color: #374151;
+}
+
+.status-booked {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+/* Reservation status colors */
+.status-badge.booked {
+    background-color: #d4f8d4;
+    color: #0f7f0f;
+}
+
+.status-badge.cancelled {
+    background-color: #ffd6d6;
+    color: #b00020;
+}
+
+.status-badge.checked-out {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+}
+
+/* Small secondary button (for Cancel etc.) */
+.btn-secondary {
+    background: #e5e7eb;
+    color: #111827;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background: #d1d5db;
+}
+
+.btn-small {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+}

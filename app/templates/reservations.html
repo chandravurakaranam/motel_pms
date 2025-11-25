@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+({% block content %}
+{% if error %}
+<script>
+    alert("{{ error }}");
+</script>
+{% endif %}
+)
+
+<h1>Reservations</h1>
+
+<div class="grid">
+    <div class="card">
+        <h2>Add Reservation</h2>
+
+        <form method="POST" action="/reservations">
+            <label>Room</label>
+            <select name="room_id" required>
+                {% for r in rooms %}
+                <option value="{{ r.id }}" class="room-option room-{{ r.status }}">
+                    {{ r.number }} - {{ r.room_type }} ({{ r.status }})
+                </option>
+                {% endfor %}
+            </select>
+
+
+            <label>Guest</label>
+            <select name="guest_id" required>
+                {% for g in guests %}
+                <option value="{{ g.id }}">{{ g.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Check-in Date</label>
+            <input type="date" name="check_in" required>
+
+            <label>Check-out Date</label>
+            <input type="date" name="check_out" required>
+
+            <button class="btn">Save Reservation</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>All Reservations</h2>
+
+        {% if reservations %}
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Room</th>
+                <th>Guest</th>
+                <th>Check-in</th>
+                <th>Check-out</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+
+
+            {% for r in reservations %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ r.room.number }}</td>
+                <td>{{ r.guest.name }}</td>
+                <td>{{ r.check_in }}</td>
+                <td>{{ r.check_out }}</td>
+                <td>
+                    {% if r.status|lower == 'booked' %}
+                    <span class="status-badge booked">Booked</span>
+                    {% elif r.status|lower == 'cancelled' %}
+                    <span class="status-badge cancelled">Cancelled</span>
+                    {% elif r.status|lower == 'checked_out' %}
+                    <span class="status-badge checked-out">Checked-out</span>
+                    {% else %}
+                    <span class="status-badge">{{ r.status }}</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if r.status|lower == 'booked' %}
+                    <form method="post" action="/reservations/{{ r.id }}/cancel" style="display:inline;">
+                        <button type="submit" class="btn-secondary btn-small">Cancel</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No reservations yet.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

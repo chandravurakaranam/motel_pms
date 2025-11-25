@@ -3,6 +3,11 @@
 {% block title %}Rooms{% endblock %}
 
 {% block content %}
+{% if error %}
+<script>
+    alert("{{ error }}");
+</script>
+{% endif %}
 <h1 class="page-title">Rooms</h1>
 
 <div class="rooms-layout">
@@ -54,7 +59,11 @@
                     <td>{{ loop.index }}</td>
                     <td>{{ room.number }}</td>
                     <td>{{ room.room_type }}</td>
-                    <td>{{ room.status }}</td>
+                    <td>
+                        <span class="status-pill status-{{ room.status }}">
+                            {{ room.status }}
+                        </span>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
