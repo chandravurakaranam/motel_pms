@@ -135,13 +135,36 @@ body {
     font-weight: 600;
 }
 
-/* Available = light green */
-.status-available,
+/* Dropdown color coding like Rooms page */
+
 .room-option-available {
     background-color: #e6ffed;
     /* light green */
     color: #166534;
-    /* dark green text */
+    /* dark green */
+}
+
+.room-option-occupied {
+    background-color: #fee2e2;
+    /* light red */
+    color: #b91c1c;
+}
+
+.room-option-cleaning {
+    background-color: #fef3c7;
+    /* light yellow */
+    color: #92400e;
+}
+
+.room-option-out_of_order {
+    background-color: #e5e7eb;
+    /* grey */
+    color: #374151;
+}
+
+/* Make sure color stays visible even when selected */
+select option:checked {
+    font-weight: bold;
 }
 
 /* Optional: other statuses if you want */

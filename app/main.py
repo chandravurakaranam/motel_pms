@@ -198,8 +198,27 @@ def create_guest(
 def reservations_page(request: Request, db: Session = Depends(get_db)):
     rooms = (
         db.query(models.Room)
-        .filter(models.Room.status == "available")  # only available rooms
+        .order_by(models.Room.number)  # 👈 all rooms
         .all()
+    )
+    guests = db.query(models.Guest).all()
+    reservations = (
+        db.query(models.Reservation)
+        .options(
+            joinedload(models.Reservation.room),
+            joinedload(models.Reservation.guest),
+        )
+        .all()
+    )
+
+    return templates.TemplateResponse(
+        "reservations.html",
+        {
+            "request": request,
+            "rooms": rooms,
+            "guests": guests,
+            "reservations": reservations,
+        },
     )
     guests = db.query(models.Guest).all()
     reservations = (
